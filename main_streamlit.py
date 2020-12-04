@@ -152,7 +152,7 @@ try:
     text = st.text_area('Escriba aquí las frases que desees agrupar')
     print(text)
 
-    #components.html(source_code_publi)
+    components.html(source_code_publi)
 
     if text:
 
