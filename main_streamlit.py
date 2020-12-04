@@ -17,7 +17,7 @@ import streamlit.components.v1 as components
 
 from gensim.models import CoherenceModel
 from wordcloud import WordCloud
-from nltk.corpus import stopwords
+#from nltk.corpus import stopwords
 
 from sklearn.manifold import TSNE
 from bokeh.plotting import figure, output_file, show
@@ -90,8 +90,7 @@ def show_topis_models_lda(lda_model, corpus):
 def wordcloud_each_topic(lda_model, corpus, stop_words):
     cols = [color for name, color in mcolors.TABLEAU_COLORS.items()]  # more colors: 'mcolors.XKCD_COLORS'
 
-    cloud = WordCloud(stopwords=stop_words,
-                      background_color='white', width=2500, height=1800, max_words=10,
+    cloud = WordCloud( background_color='white', width=2500, height=1800, max_words=10,
                       colormap='tab10', color_func=lambda *args, **kwargs: cols[i], prefer_horizontal=1.0)
 
     topics = lda_model.show_topics(formatted=False)
@@ -157,7 +156,7 @@ try:
 
     if text:
 
-        stop_words = stopwords.words('spanish')
+        #stop_words = stopwords.words('spanish')
 
         progress_bar = st.progress(0)
         status_text = st.empty()
@@ -172,7 +171,7 @@ try:
             progress_bar.progress(50)
 
             #show_topis_models_lda(lda_model, corpus)
-            wordcloud_each_topic(lda_model, corpus, stop_words)
+            wordcloud_each_topic(lda_model, corpus, None)
             status_text.text("%i%% Complete" % 100)
             progress_bar.progress(100)
             progress_bar.empty()
