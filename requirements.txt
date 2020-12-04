@@ -4,6 +4,5 @@ streamlit==0.71.0
 matplotlib
 gensim
 wordcloud
-nltk
 sklearn
 bokeh
