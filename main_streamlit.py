@@ -185,6 +185,6 @@ try:
             progress_bar.empty()
 
 except Exception as error:
-    print('ERROR:', error)
+    print('ERROR:' + str(error))
     st.text('ERROR:', error)
     components.html(source_code_publi)
