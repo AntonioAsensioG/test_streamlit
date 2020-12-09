@@ -186,5 +186,5 @@ try:
 
 except Exception as error:
     print('ERROR:' + str(error))
-    st.text('ERROR:', error)
+    st.text('ERROR:' + str(error))
     components.html(source_code_publi)
