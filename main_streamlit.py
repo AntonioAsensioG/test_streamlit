@@ -179,7 +179,7 @@ try:
             progress_bar.progress(50)
 
             #show_topis_models_lda(lda_model, corpus)
-            wordcloud_each_topic(lda_model, corpus, None)
+            wordcloud_each_topic(lda_model, corpus)
             status_text.text("%i%% Complete" % 100)
             progress_bar.progress(100)
             progress_bar.empty()
