@@ -116,7 +116,6 @@ def wordcloud_each_topic(lda_model, corpus):
     st.pyplot(plt)
 
 
-@st.cache
 def get_stopwords(language):
     # print(nltk.data.path)
     return stopwords.words(language)
