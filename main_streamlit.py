@@ -158,7 +158,7 @@ try:
     #st.markdown("Bienvenido, aquí podrás agrupar diferentes frases, ya sean preguntas, comentarios, ...")
     #st.header("Introduce el Texto")
     text = st.text_area('Escriba aquí las frases que desees agrupar')
-    text = 'hola esto es una prueba\n prueba de estilo\nhola pepe como estas?'
+    # text = 'hola esto es una prueba\n prueba de estilo\nhola pepe como estas?'
     print(text)
 
     if text:
