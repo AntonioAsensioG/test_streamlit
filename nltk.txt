@@ -1,1 +1,1 @@
-corpora/stopwords/spanish
+corpora\stopwords
