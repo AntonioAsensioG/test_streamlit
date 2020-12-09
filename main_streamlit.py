@@ -12,15 +12,16 @@ import matplotlib.colors as mcolors
 
 # Gensim
 import gensim
+# import nltk.data
 import gensim.corpora as corpora
 import streamlit.components.v1 as components
 
-from gensim.models import CoherenceModel
+import gensim.models.callbacks
 from wordcloud import WordCloud
-#from nltk.corpus import stopwords
+from nltk.corpus import stopwords
 
 from sklearn.manifold import TSNE
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
 from bokeh.io import output_notebook
 
 
@@ -28,14 +29,16 @@ print('StreamLit version', st.__version__)
 print('Gensim version', gensim.__version__)
 
 
-def process_words(texto):
+def process_words(texto, stop_word):
     """Convert a document into a list of lowercase tokens, ignoring tokens that are too short or too long.
     Uses :func:`~gensim.utils.tokenize` internally.
     """
     sentences = texto.split('\n')
     print(sentences)
-    tokens = [gensim.utils.simple_preprocess(str(sent), deacc=True) for sent in sentences]
+    sentences = [gensim.utils.simple_preprocess(str(sent), deacc=True) for sent in sentences]
 
+    # Filtrar stop words
+    tokens = [[token for token in tokens if token not in stop_word] for tokens in sentences]
     print(tokens)
     return tokens
 
@@ -87,10 +90,10 @@ def show_topis_models_lda(lda_model, corpus):
     st.bokeh_chart(plot)
 
 
-def wordcloud_each_topic(lda_model, corpus, stop_words):
+def wordcloud_each_topic(lda_model, corpus):
     cols = [color for name, color in mcolors.TABLEAU_COLORS.items()]  # more colors: 'mcolors.XKCD_COLORS'
 
-    cloud = WordCloud( background_color='white', width=2500, height=1800, max_words=10,
+    cloud = WordCloud(background_color='white', width=2500, height=1800, max_words=10,
                       colormap='tab10', color_func=lambda *args, **kwargs: cols[i], prefer_horizontal=1.0)
 
     topics = lda_model.show_topics(formatted=False)
@@ -111,6 +114,12 @@ def wordcloud_each_topic(lda_model, corpus, stop_words):
     plt.tight_layout()
     plt.show()
     st.pyplot(plt)
+
+
+@st.cache
+def get_stopwords(language):
+    # print(nltk.data.path)
+    return stopwords.words(language)
 
 
 try:
@@ -150,18 +159,18 @@ try:
     #st.markdown("Bienvenido, aquí podrás agrupar diferentes frases, ya sean preguntas, comentarios, ...")
     #st.header("Introduce el Texto")
     text = st.text_area('Escriba aquí las frases que desees agrupar')
+    text = 'hola esto es una prueba\n prueba de estilo\nhola pepe como estas?'
     print(text)
-
-    components.html(source_code_publi)
 
     if text:
 
-        #stop_words = stopwords.words('spanish')
+        stop_words = get_stopwords('spanish')
+        print(stop_words)
 
         progress_bar = st.progress(0)
         status_text = st.empty()
 
-        data_ready = process_words(text)  # processed Text Data!
+        data_ready = process_words(text, stop_words)  # processed Text Data!
         status_text.text("%i%% Complete" % 25)
         progress_bar.progress(25)
 
@@ -177,4 +186,6 @@ try:
             progress_bar.empty()
 
 except Exception as error:
-    print(error)
+    print('ERROR:', error)
+
+    components.html(source_code_publi)
